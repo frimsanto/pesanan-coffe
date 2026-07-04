@@ -106,7 +106,6 @@ export default function KasirPage() {
       const tnames = (tableRes.data ?? []).map((t) => t.nama_meja as string);
       setTables(tnames);
       setMeja((prev) => prev || tnames[0] || "");
-      console.log("[kasir] initial fetch pending self-orders:", pendingRes.length, pendingRes);
       setPending(pendingRes);
       setLoading(false);
     })();
@@ -122,15 +121,15 @@ export default function KasirPage() {
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "orders" },
-        async (payload) => {
-          console.log("[kasir] realtime payload diterima:", payload);
+        async () => {
           const list = await fetchPendingSelfOrders(supabase);
-          console.log("[kasir] realtime re-fetch pending:", list.length, list);
           setPending(list);
         }
       )
       .subscribe((status, err) => {
-        console.log("[kasir] realtime channel status:", status, err ?? "");
+        if (status === "CHANNEL_ERROR" || status === "TIMED_OUT" || err) {
+          console.error("[kasir] realtime channel gagal subscribe:", status, err);
+        }
       });
     return () => {
       supabase.removeChannel(channel);

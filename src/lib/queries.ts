@@ -41,11 +41,12 @@ function mapOrder(raw: RawOrder): OrderRow {
 export async function fetchKitchenOrders(
   supabase: SupabaseClient
 ): Promise<OrderRow[]> {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("orders")
     .select(SELECT)
     .in("status", KITCHEN_STATUSES)
     .order("dibuat_pada", { ascending: true });
+  if (error) console.error("[fetchKitchenOrders] query error:", error);
   return ((data ?? []) as unknown as RawOrder[]).map(mapOrder);
 }
 
@@ -58,10 +59,6 @@ export async function fetchPendingSelfOrders(
     .select(SELECT)
     .eq("status", "menunggu_konfirmasi")
     .order("dibuat_pada", { ascending: true });
-  if (error) {
-    console.error("[fetchPendingSelfOrders] query error:", error);
-  } else {
-    console.log("[fetchPendingSelfOrders] rows:", data?.length ?? 0, data);
-  }
+  if (error) console.error("[fetchPendingSelfOrders] query error:", error);
   return ((data ?? []) as unknown as RawOrder[]).map(mapOrder);
 }
