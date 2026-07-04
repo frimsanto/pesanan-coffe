@@ -252,7 +252,7 @@ function OrderTicket({
             )}
             {style.nextLabel}
           </Button>
-        ) : takeaway ? (
+        ) : (
           <Button
             size="lg"
             variant="success"
@@ -260,13 +260,8 @@ function OrderTicket({
             onClick={onPickup}
           >
             <CheckCircle2 className="h-5 w-5" />
-            Sudah Diambil
+            {takeaway ? "Sudah Diambil" : "Selesai"}
           </Button>
-        ) : (
-          <div className="flex items-center justify-center gap-2 rounded-md bg-success/10 py-3 text-base font-semibold text-success">
-            <CheckCircle2 className="h-5 w-5" />
-            Siap disajikan
-          </div>
         )}
       </div>
     </div>

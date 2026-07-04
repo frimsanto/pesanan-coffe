@@ -18,8 +18,9 @@ export async function advanceOrderStatus(orderId: string, current: OrderStatus) 
 }
 
 /**
- * Tandai pesanan bawa pulang sudah diambil pelanggan: 'siap' -> 'selesai'.
- * (Dine-in tidak pakai ini; mejanya dibebaskan lewat papan Meja.)
+ * Tandai tiket selesai: 'siap' -> 'selesai'. Dipakai untuk dine-in
+ * ("Selesai" — sudah diantar ke meja) maupun bawa pulang ("Sudah Diambil").
+ * Tiket hilang dari papan aktif /dapur; tetap tersimpan & terlihat di /riwayat.
  */
 export async function markPickedUp(orderId: string) {
   const supabase = await createClient();
