@@ -1,26 +1,260 @@
 @import "tailwindcss";
 
+/* Class-based dark mode (toggled by next-themes) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  Kopi Senja — "warm dusk" palette.
+  Satu keluarga warna senja: malam (base gelap), senja-ungu (aksen gelap),
+  tembaga (brand utama), krem-susu (base terang), sage (sukses),
+  merah-bata (error), kuning redup (pending).
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --radius: 0.75rem;
+
+  /* Warna mentah palet (dipakai untuk gradient login & sidebar) */
+  --malam: #231f20;
+  --senja-ungu: #3d2c3e;
+  --tembaga: #b8794f;
+  --tembaga-terang: #cf9668;
+  --krem-susu: #f6f1e9;
+  --sage: #6b8f71;
+  --merah-bata: #b5533c;
+
+  /* ---- Light mode (base krem-susu) ---- */
+  --background: #f6f1e9;
+  --foreground: #2a2224;
+
+  --card: #fdfaf4;
+  --card-foreground: #2a2224;
+
+  --popover: #fdfaf4;
+  --popover-foreground: #2a2224;
+
+  --primary: #b8794f; /* tembaga — brand utama */
+  --primary-foreground: #fbf5ec;
+
+  --secondary: #ece2d3;
+  --secondary-foreground: #2a2224;
+
+  --muted: #ece2d3;
+  --muted-foreground: #857567;
+
+  --accent: #efe6d7;
+  --accent-foreground: #2a2224;
+
+  --border: #e3d8c6;
+  --input: #e3d8c6;
+  --ring: #b8794f;
+
+  /* Warna semantik POS */
+  --success: #6b8f71; /* sage — siap / bayar selesai */
+  --success-foreground: #fbf5ec;
+  --warning: #bd8a2e; /* kuning redup — pending */
+  --warning-foreground: #3a2a08;
+  --destructive: #b5533c; /* merah-bata — void / terlambat */
+  --destructive-foreground: #fbf5ec;
+}
+
+.dark {
+  /* ---- Dark mode (base malam) ---- */
+  --background: #231f20;
+  --foreground: #f0e9de;
+
+  --card: #2b2427;
+  --card-foreground: #f0e9de;
+
+  --popover: #2b2427;
+  --popover-foreground: #f0e9de;
+
+  --primary: #c68b5a; /* tembaga sedikit lebih terang agar kontras di gelap */
+  --primary-foreground: #201b1c;
+
+  --secondary: #342c33;
+  --secondary-foreground: #f0e9de;
+
+  --muted: #322a30;
+  --muted-foreground: #ab9e91;
+
+  --accent: #3a2f3b; /* senja-ungu tint */
+  --accent-foreground: #f0e9de;
+
+  --border: #3b3237;
+  --input: #3b3237;
+  --ring: #c68b5a;
+
+  --success: #7ba081;
+  --success-foreground: #16241a;
+  --warning: #d1a44c;
+  --warning-foreground: #2a1e06;
+  --destructive: #c56547;
+  --destructive-foreground: #201b1c;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  /* aksen tembaga mentah agar bisa dipakai lewat utility (border/bg opacity) */
+  --color-tembaga: var(--tembaga);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Tipografi: display (Fraunces), UI (Public Sans), angka (IBM Plex Mono) */
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-public-sans), system-ui, Arial, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: var(--border);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-public-sans), system-ui, Arial, sans-serif;
+}
+
+/* Angka harga: rata & presisi seperti struk */
+.tabular {
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* Label tabel / eyebrow ala premium */
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.6875rem;
+  font-weight: 600;
+}
+
+/* ---- /login: signature moment ---- */
+.senja-gradient {
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(184, 121, 79, 0.18), transparent 60%),
+    linear-gradient(165deg, var(--malam) 0%, var(--senja-ungu) 100%);
+}
+
+/* Sidebar staf: gradient tipis malam -> senja-ungu */
+.sidebar-gradient {
+  background: linear-gradient(185deg, var(--malam) 0%, var(--senja-ungu) 140%);
+}
+
+/* Tombol keypad PIN — lingkaran dengan tekstur metalik tembaga tipis */
+.keypad-key {
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 45%),
+    linear-gradient(160deg, #33292c 0%, #262023 100%);
+  border: 1px solid rgba(184, 121, 79, 0.45);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.4),
+    0 1px 2px rgba(0, 0, 0, 0.3);
+  color: #f0e9de;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+.keypad-key:hover {
+  border-color: rgba(207, 150, 104, 0.85);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(184, 121, 79, 0.25),
+    0 4px 12px rgba(0, 0, 0, 0.35);
+}
+.keypad-key:active {
+  transform: scale(0.96);
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.5),
+    0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Micro-animation fade-in (login), sekali saat load */
+@keyframes senja-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.senja-rise {
+  animation: senja-rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Bottom sheet keranjang / pembayaran (self-order) */
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.sheet-up {
+  animation: sheet-up 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.backdrop-in {
+  animation: backdrop-in 200ms ease both;
+}
+
+/* Badge jumlah item pada floating cart button — pulse singkat saat berubah */
+@keyframes badge-pop {
+  0% {
+    transform: scale(0.6);
+  }
+  60% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.badge-pop {
+  animation: badge-pop 150ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .senja-rise,
+  .sheet-up,
+  .backdrop-in,
+  .badge-pop {
+    animation: none;
+  }
 }
