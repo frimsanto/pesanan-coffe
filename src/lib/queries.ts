@@ -53,10 +53,15 @@ export async function fetchKitchenOrders(
 export async function fetchPendingSelfOrders(
   supabase: SupabaseClient
 ): Promise<OrderRow[]> {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("orders")
     .select(SELECT)
     .eq("status", "menunggu_konfirmasi")
     .order("dibuat_pada", { ascending: true });
+  if (error) {
+    console.error("[fetchPendingSelfOrders] query error:", error);
+  } else {
+    console.log("[fetchPendingSelfOrders] rows:", data?.length ?? 0, data);
+  }
   return ((data ?? []) as unknown as RawOrder[]).map(mapOrder);
 }
