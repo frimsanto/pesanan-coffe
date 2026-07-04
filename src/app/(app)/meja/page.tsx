@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { TableQr } from "@/components/table-qr";
 import { MejaRealtime } from "@/components/meja-realtime";
 import { TableStatusSelect } from "@/components/table-status-select";
+import { CloseTableButton } from "@/components/close-table-button";
 
 export const dynamic = "force-dynamic";
 
@@ -173,6 +174,10 @@ export default async function MejaPage() {
                   </div>
                 ) : (
                   <TableQr namaMeja={m.nama_meja} />
+                )}
+
+                {terisi && (
+                  <CloseTableButton tableId={m.id} namaMeja={m.nama_meja} />
                 )}
 
                 <TableStatusSelect tableId={m.id} status={m.status} />
